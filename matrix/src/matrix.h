@@ -12,7 +12,12 @@ using std::size_t;
 template <size_t M, size_t N, typename T>
 class Matrix {
 public:
-    Matrix() = default;
+    Matrix() {
+        for (size_t i = 0; i < M; ++i)
+            for (size_t j = 0; j < N; ++j)
+                m_Matrix[i][j] = 0;
+    }
+
     Matrix(IL_t<IL_t<T>> &&initMat) {
         if (initMat.size() != M)
             throw std::string("Size Mismatch");
@@ -70,16 +75,12 @@ public:
         return *this;
     }
 
-    template <size_t Y>
-    Matrix<M, Y, T> operator*(const Matrix<N, Y, T> &other) const {
-        Matrix<M, Y, T> res;
+    Matrix operator*(const T scalar) const {
+        Matrix res;
 
         for (size_t i = 0; i < M; ++i)
-            for (size_t j = 0; j < Y; ++j) {
-                res[i][j] = 0;
-                for (size_t k = 0; k < N; ++k)
-                    res[i][j] += m_Matrix[i][k] * other[k][j];
-            }
+            for (size_t j = 0; j < N; ++j)
+                res[i][j] = scalar * m_Matrix[i][j];
 
         return res;
     }
@@ -100,6 +101,18 @@ public:
                 m_Matrix[i][j] *= scalar;
 
         return *this;
+    }
+
+    template <size_t Y>
+    Matrix<M, Y, T> operator*(const Matrix<N, Y, T> &other) const {
+        Matrix<M, Y, T> res;
+
+        for (size_t i = 0; i < M; ++i)
+            for (size_t j = 0; j < Y; ++j)
+                for (size_t k = 0; k < N; ++k)
+                    res[i][j] += m_Matrix[i][k] * other[k][j];
+
+        return res;
     }
 
     Matrix<M, M, T> operator^(const int scalar) const {
@@ -158,7 +171,7 @@ Matrix<N, M, T> Transpose(const Matrix<M, N, T> &mat) {
 }
 
 template <typename T>
-Matrix<2, 2, T> Inverse(const Matrix<2, 2, T> &mat) {
+Matrix<2, 2, T> Invert(const Matrix<2, 2, T> &mat) {
     Matrix<2, 2, T> res({
         {mat[1][1], -mat[0][1]},
         {-mat[1][0], mat[0][0]},
