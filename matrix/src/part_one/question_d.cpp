@@ -6,6 +6,8 @@
 
 namespace PartOne {
 void QuestionD() {
+    std::cout << "(d)\n";
+
     std::cout << "A^-1"    //
               << Invert(A) //
               << "\n";
