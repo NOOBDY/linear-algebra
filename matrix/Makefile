@@ -8,16 +8,12 @@ OUT_DIR := bin
 
 SRC := 									\
 	$(SRC_DIR)/main.cpp 				\
-	$(SRC_DIR)/part_one/question_a.cpp	\
-	$(SRC_DIR)/part_one/question_b.cpp	\
-	$(SRC_DIR)/part_one/question_c.cpp	\
-	$(SRC_DIR)/part_one/question_d.cpp	\
-	$(SRC_DIR)/part_two/question.cpp	\
+	$(SRC_DIR)/question_one.cpp			\
+	$(SRC_DIR)/question_two.cpp			\
 
 DEP := 									\
 	$(SRC_DIR)/matrix.h					\
-	$(SRC_DIR)/part_one/questions.h		\
-	$(SRC_DIR)/part_two/questions.h		\
+	$(SRC_DIR)/questions.h				\
 
 OBJ := $(SRC:.cpp=.o)
 OBJ := $(subst $(SRC_DIR)/,$(OUT_DIR)/,$(OBJ))

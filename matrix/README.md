@@ -1,4 +1,4 @@
-# Linear Algebra Programming Assignment #1
+# Linear Algebra Programming Assignment #2
 
 Basic Matrix Arithmetic Library Over-Engineered with C++ Templates
 
@@ -83,6 +83,10 @@ The `Matrix` class supports many operators as shown below
 * Dimension Access: Accessing the width and height of the matrix can be achieved using `A.GetWidth()` and `A.GetHeight()`.
 
 * Transpose: Return a new transposed matrix by calling `Transpose(A)`
+
 * Inverse: Return a new inverted matrix by calling `Invert(A)`, throws an exception if the matrix is not invertible.
 
+* Eigenvalue: Finding the eigenvalues can be achieved with `Eigenvalue(A)`
+
+* Eigenvector: Finding the eigenvectors can be achieved with `Eigenvector(A)`
 > Side effects: Most functions are marked `const` and can't introduce side effects to the original matrix. However, operators such as `+=` and `-=` does the operation in-place and can change the passed in matrix.

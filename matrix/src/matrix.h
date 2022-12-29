@@ -1,6 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <cmath>
 #include <ostream>
 #include <string>
 #include <array>
@@ -128,7 +129,7 @@ public:
         return res;
     }
 
-    bool operator==(const Matrix &other) {
+    bool operator==(const Matrix &other) const {
         for (size_t i = 0; i < M; ++i)
             for (size_t j = 0; j < N; ++j)
                 if (m_Matrix[i][j] != other[i][j])
@@ -137,7 +138,7 @@ public:
         return true;
     }
 
-    bool operator!=(const Matrix &other) { return !(*this == other); }
+    bool operator!=(const Matrix &other) const { return !(*this == other); }
 
     std::array<T, N> &operator[](size_t index) { return m_Matrix[index]; }
     const std::array<T, N> &operator[](size_t index) const {
@@ -183,6 +184,43 @@ Matrix<2, 2, T> Invert(const Matrix<2, 2, T> &mat) {
         throw std::string("Not invertible");
 
     return (1. / det) * res;
+}
+
+template <typename T>
+Matrix<1, 2, T> Eigenvalue(const Matrix<2, 2, T> &mat) {
+    Matrix<1, 2, T> res;
+
+    const double b = -mat[0][0] - mat[1][1];
+    const double c = mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
+
+    const double sqrt_D = std::sqrt(b * b - 4 * c);
+
+    res[0][0] = (-b + sqrt_D) / 2;
+    res[0][1] = (-b - sqrt_D) / 2;
+
+    return res;
+}
+
+template <typename T>
+Matrix<2, 2, T> Eigenvector(const Matrix<2, 2, T> &mat) {
+    Matrix<2, 2, T> I({{1, 0}, {0, 1}});
+
+    if (mat == Matrix<2, 2, T>({{0, 0}, {0, 0}}))
+        return I;
+
+    Matrix<2, 2, T> res;
+    Matrix<2, 2, T> tmp;
+    Matrix<1, 2, T> eigenvalues = Eigenvalue(mat);
+
+    tmp[0] = (mat - eigenvalues[0][0] * I)[0];
+    tmp[1] = (mat - eigenvalues[0][1] * I)[0];
+
+    res[0][0] = -tmp[0][1];
+    res[0][1] = -tmp[1][1];
+    res[1][0] = tmp[0][0];
+    res[1][1] = tmp[1][0];
+
+    return res;
 }
 
 #endif
